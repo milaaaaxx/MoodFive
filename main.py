@@ -1,4 +1,7 @@
 import sys
+import random
+
+from song import SONGS
 
 from PySide6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout,QComboBox, QPushButton
 from PySide6.QtCore import Qt
@@ -33,7 +36,15 @@ layout.addWidget(result_label)
 
 def show_mood():
     selected_mood = mood_selector.currentText()
-    result_label.setText(f"okayyyy, so were feelinggg: {selected_mood}")
+    matching_songs = SONGS[selected_mood]
+    selected_songs = random.sample(matching_songs, 5)
+
+    result_text = "your soundtrack just dropped:\n\n"
+
+    for number, song in enumerate(selected_songs, start=1):
+        result_text += f"{number}. {song}\n"
+
+    result_label.setText(result_text)
 
 soundtrack_button.clicked.connect(show_mood)
 
