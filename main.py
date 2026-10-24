@@ -1,6 +1,6 @@
 import sys
 
-from PySide6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout,QComboBox
+from PySide6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout,QComboBox, QPushButton
 from PySide6.QtCore import Qt
 app = QApplication(sys.argv)
 
@@ -23,6 +23,19 @@ layout.addWidget(subtitle)
 mood_selector = QComboBox()
 mood_selector.addItems(["Thriving","just chilling", "In my yearning era", "brain has 47 tabs open lol", "main character energy","running on 2%" ])
 layout.addWidget(mood_selector)
+
+soundtrack_button = QPushButton("Soundtracks")
+layout.addWidget(soundtrack_button)
+
+result_label = QLabel("Your soundtrack is waiting...")
+result_label.setWordWrap(True)
+layout.addWidget(result_label)
+
+def show_mood():
+    selected_mood = mood_selector.currentText()
+    result_label.setText(f"okayyyy, so were feelinggg: {selected_mood}")
+
+soundtrack_button.clicked.connect(show_mood)
 
 window.show()
 sys.exit(app.exec())
