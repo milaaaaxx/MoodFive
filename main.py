@@ -3,6 +3,7 @@ import random
 
 from song import SONGS
 from functools import partial 
+from vinyl import VinylRecord
 
 from PySide6.QtWidgets import (
     QApplication, 
@@ -53,17 +54,8 @@ player_caption = QLabel("YOUR DAILY SOUNDTRACK")
 player_caption.setAlignment(Qt.AlignmentFlag.AlignCenter)
 player_layout.addWidget(player_caption)
 
-record = QLabel("MOOD\nFIVE")
-record.setFixedSize(160, 160)
-record.setAlignment(Qt.AlignmentFlag.AlignCenter)
-record.setStyleSheet("""
-      background-color: #161616;
-      color: #d7ff85;
-      border: 6px solid #333333;
-      border-radius: 80px;
-      font-size: 22px;
-      font-weight: bold;
-       """)
+record = VinylRecord()
+
 player_layout.addWidget(
     record,
     alignment=Qt.AlignmentFlag.AlignHCenter,
@@ -97,6 +89,7 @@ current_playlist = []
 def select_song(index, checked=False):
     active_song_label.setText(current_playlist[index])
     player_card.show()
+    record.start_rotation()
 
     while other_songs_layout.count() > 0 :
         item = other_songs_layout.takeAt(0)
