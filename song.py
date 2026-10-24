@@ -1,5 +1,5 @@
 SONGS = {
-    "Thriving": [
+    "thriving": [
         "Happy - Pharrel Williams",
         "Espresso - Sabrina Carpenter",
         "APT. - ROSÉ & Bruno Mars",
@@ -7,14 +7,14 @@ SONGS = {
         "BIRD OF A FEATHER - Billie Elish",
         "Golden - HUNTR/X"
     ],
-    "Just chilling": [
+    "just chilling": [
         "Love Me Not - Ravyn Lenae",
         "Snooze - SZA",
         "Pink + White - Frank Ocean",
         "Sparks - Coldplay",
         "ocean eyes - Billie Elish",
     ],
-    "In my yearning era": [
+    "in my yearning era": [
         "back to friends - sombr",
         "Sailor Song - Gigi Perez",
         "No One Noticed - The Marias",
