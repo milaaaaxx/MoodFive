@@ -32,12 +32,12 @@ class VinylRecord(QWidget):
     def stop_rotation(self):
         self.animation_timer.stop()
 
-    def set_cover(self, file_path):
-        image = QPixmap(file_path)
+    def set_cover_data(self, image_data):
+        image = QPixmap()
         
-        if image.isNull():
+        if not image.loadFromData(image_data):
             return False
-        
+
         self.cover = image.scaled(
             64,
             64,
@@ -78,7 +78,7 @@ class VinylRecord(QWidget):
         if self.cover.isNull():
 
             painter.setPen(QColor("#161616"))
-            painter.setFont(("#Sans Serif", 9, QFont.Weight.Bold))
+            painter.setFont(QFont("Sans Serif", 9, QFont.Weight.Bold))
             painter.drawText(
             QRect(-30, -30, 60, 60),
             Qt.AlignmentFlag.AlignCenter,
@@ -87,8 +87,8 @@ class VinylRecord(QWidget):
         else:
             painter.save()
 
-            Circle = QPainterPath()
-            Circle.addElipse(-32, -32, 64, 64)
+            circle = QPainterPath()
+            circle.addEllipse(-32, -32, 64, 64)
             painter.setClipPath(circle)
 
             painter.drawPixmap(
@@ -98,5 +98,5 @@ class VinylRecord(QWidget):
            )
            
             painter.restore()
-
-            painter.end()
+ 
+        painter.end()
