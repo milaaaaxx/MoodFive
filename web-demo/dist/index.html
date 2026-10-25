@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Pick your mood. Discover five songs and preview your next obsession with MoodFive.">
+  <title>MoodFive — your daily soundtrack</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="songs.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main>
+    <header><a class="brand" href="./">MOOD<span>FIVE</span><span class="brand-dot"></span></a><span class="edition">YOUR DAILY SOUNDTRACK</span></header>
+    <section class="intro">
+      <p class="eyebrow">A LITTLE CHECK-IN. A NEW OBSESSION.</p>
+      <h1>What's the vibe <em>today?</em></h1>
+      <p>Pick your mood. Find your next five songs to obsess over.</p>
+    </section>
+    <form id="mood-form">
+      <div class="select-wrap"><label for="mood">TODAY I'M FEELING</label><select id="mood" name="mood"></select></div>
+      <button class="primary" type="submit">Find my soundtracks <span aria-hidden="true">↗</span></button>
+    </form>
+    <section id="results" hidden aria-label="Your five songs">
+      <div class="section-label"><span id="playlist-label">YOUR FIVE</span><span>HANDPICKED VIBES · 15-SECOND PREVIEWS</span></div>
+      <article class="player">
+        <div class="record-wrap"><div id="record" class="record"><div class="record-label"><span id="record-placeholder">MOOD<br>FIVE</span><img id="cover" alt="" hidden></div><span class="spindle"></span></div></div>
+        <div class="player-info">
+          <p class="eyebrow">ON YOUR TURNTABLE</p><h2 id="track-title"></h2><p id="track-artist" class="artist"></p>
+          <p id="status" role="status" aria-live="polite"></p>
+          <div class="controls"><button id="play" class="primary" type="button" disabled>Loading…</button><span id="time">0:00 / 0:15</span></div>
+          <progress id="progress" max="15" value="0" aria-label="Preview playback"></progress>
+          <a id="store-link" class="store-link" target="_blank" rel="noopener noreferrer" hidden><img src="itunes-badge.svg" alt="Get it on iTunes" width="110" height="40"></a>
+          <p class="credit">Song previews provided courtesy of iTunes. Discover the full song in the store.</p>
+        </div>
+      </article>
+      <div class="queue-heading"><h3>Also your vibe</h3><span>Pick a track to put it on the record.</span></div>
+      <div id="queue" class="queue"></div>
+    </section>
+    <div id="empty" class="empty"><div class="mini-record" aria-hidden="true"></div><p>Your mood. Your five.<br><span>Let's find something that feels like you.</span></p></div>
+    <footer><span>Made by milaaaaxx · MoodFive</span><a href="https://github.com/milaaaaxx/MoodFive" target="_blank" rel="noopener noreferrer">Explore the Python project ↗</a></footer>
+  </main>
+  <audio id="audio" preload="none"></audio>
+</body>
+</html>
