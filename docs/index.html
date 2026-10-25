@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="MoodFive: choose your mood and discover five songs, with spinning album covers and 15-second previews.">
+  <title>MoodFive</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="songs.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main>
+    <h1>Whats the vibe today?:&gt;</h1>
+    <p class="subtitle">Pick your mood, We'll find your next 5 songs to obsess over:3</p>
+    <form id="mood-form">
+      <select id="mood" name="mood" aria-label="Pick your mood"></select>
+      <button type="submit" id="soundtracks">Soundtracks</button>
+    </form>
+    <section id="results" hidden aria-label="Your five songs">
+      <article class="player">
+        <p id="status" role="status" aria-live="polite">YOUR DAILY SOUNDTRACK</p>
+        <div class="record-wrap"><div id="record" class="record">
+          <div class="groove groove-1"></div><div class="groove groove-2"></div><div class="groove groove-3"></div><div class="groove groove-4"></div>
+          <div class="record-label"><span id="record-placeholder">MOOD<br>FIVE</span><img id="cover" alt="" hidden></div>
+        </div></div>
+        <h2><span id="track-title"></span> - <span id="track-artist"></span></h2>
+      </article>
+      <div id="queue" class="queue"></div>
+      <div class="preview-tools">
+        <button id="play" type="button" disabled>Loading…</button>
+        <span id="time">0:00 / 0:15</span>
+        <progress id="progress" max="15" value="0" aria-label="Preview playback" hidden></progress>
+        <a id="store-link" target="_blank" rel="noopener noreferrer" hidden><img src="itunes-badge.svg" alt="Get it on iTunes" width="90" height="30"></a>
+        <small>Song previews provided courtesy of iTunes.</small>
+      </div>
+    </section>
+  </main>
+  <audio id="audio" preload="none"></audio>
+</body>
+</html>
