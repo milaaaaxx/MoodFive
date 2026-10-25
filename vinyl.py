@@ -15,15 +15,13 @@ class VinylRecord(QWidget):
         self.animation_timer.setInterval(16)
         self.animation_timer.timeout.connect(self.rotate_step)
 
-        self.stop_timer = QTimer(self)
-        self.stop_timer.setSingleShot(True)
-        self.stop_timer.timeout.connect(self.stop_rotation)
+
 
     def start_rotation(self):
         self.angle = 0
         self.update()
         self.animation_timer.start()
-        self.stop_timer.start(5000)
+        
 
     def rotate_step(self):
         self.angle = (self.angle + 3) % 360

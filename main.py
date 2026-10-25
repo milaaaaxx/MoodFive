@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
     QFrame,
  )
 
+from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtCore import Qt, QUrl
 from vinyl import VinylRecord
 from urllib.parse import urlencode
@@ -31,6 +32,11 @@ window = QWidget()
 window.setWindowTitle("MoodFive")
 window.resize(800,900)
 network = QNetworkAccessManager(window)
+audio_output = QAudioOutput(window)
+audio_output.setVolume(0.35)
+
+player = QMediaPlayer(window)
+player.setAudioOutput(audio_output)
 
 layout = QVBoxLayout(window)
 layout.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -95,6 +101,36 @@ layout.addLayout(other_songs_layout)
 
 current_playlist = []
 
+def sync_record(_=None):
+    is_playing = (
+        player.playbackState()
+        == QMediaPlayer.PlaybackState.PlayingState
+    )
+
+    is_buffered = (
+        player.mediaStatus()
+        == QMediaPlayer.MediaStatus.BufferedMedia
+    )
+
+    if is_playing and is_buffered:
+        record.animation_timer.start()
+    else:
+        record.stop_rotation()
+
+def check_preview_position(position):
+    if position >= 15000:
+        player.stop()
+
+def show_audio_error(error, message):
+    record.stop_rotation()
+    player_caption.setText("coudnttt playy thiss previeuww")
+    print("audio error", message)
+
+player.playbackStateChanged.connect(sync_record)
+player.mediaStatusChanged.connect(sync_record)
+player.positionChanged.connect(check_preview_position)
+player.errorOccurred.connect(show_audio_error)
+
 def fetch_bytes(url, song, on_succes):
     request = QNetworkRequest(QUrl(url))
     request.setTransferTimeout(10000)
@@ -122,6 +158,9 @@ def clean_name(text):
     return "".join(character for character in text.casefold() if character.isalnum())
 
 def load_cover(song):
+    player.stop()
+    player.setSource(QUrl())
+
     record.stop_rotation()
     record.cover = QPixmap()
     record.update()
@@ -142,6 +181,12 @@ def load_cover(song):
 
     search_url = "https://itunes.apple.com/search?" + urlencode(parameters)
 
+    if song == "Tired - beabadoobee":
+        search_url = (
+             "https://itunes.apple.com/lookup"
+            "?id=1444723452&country=NL"
+        )
+
     def receive_search(raw_data):
         try:
             results = json.loads(raw_data)["results"]
@@ -150,10 +195,15 @@ def load_cover(song):
             return
          
         track = None
-
+        
         for candidate in results:
             same_title = clean_name(candidate.get("trackName", "")) == clean_name(title)
-            same_artist = clean_name(candidate.get("artistName", "")) == clean_name(artist)
+            found_artist = candidate.get("artistName", "")
+
+            if found_artist == 'Curtis "50 Cent" Jackson':
+                found_artist = "50 Cent"
+
+            same_artist = clean_name(found_artist) == clean_name(artist)
 
             if same_artist and same_title:
                 track = candidate
@@ -170,11 +220,22 @@ def load_cover(song):
             return
         
         def receive_image(image_data):
-            if record.set_cover_data(image_data):
-               player_caption.setText(track.get("collectionName", "YOUR SOUNDTRACK"))
-               record.start_rotation()
-            else:
-                player_caption.setText("coudnt read the cover image")
+            if not record.set_cover_data(image_data):
+                player_caption.setText("Coudnt read teh cover image...")
+                return
+
+            player_caption.setText(
+                track.get("collectionName", "YOUR SOUNDTRACK")
+            )
+
+            preview_url = track.get("previewUrl")
+
+            if not preview_url:
+                player_caption.setText("no preview available for this song")
+                return
+
+            player.setSource(QUrl(preview_url))
+            player.play()
 
         fetch_bytes(cover_url, song, receive_image)
     
